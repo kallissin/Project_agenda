@@ -24,3 +24,18 @@ def ver_contato(request, contato_id):
     return render(request, 'contatos/ver_contato.html', {
         'contato': contato
     })
+
+def busca(request):
+    termo = request.GET.get('termo')
+    contatos = Contato.objects.order_by('id').filter(
+        nome=termo,
+        mostrar = True
+    )
+    paginator = Paginator(contatos, 5)
+
+    page = request.GET.get('p')
+    contatos = paginator.get_page(page)
+    
+    return render(request, 'contatos/busca.html', {
+        'contatos': contatos
+    })
